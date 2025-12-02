@@ -17,40 +17,14 @@
     - name: Extraer datos de los Teams
       set_fact:
         teams_list: >
-          {{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name}") }}
-
-          # {{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}
-        # teams_list: "{{ api_response.json.results | json_query('[].{id: id, name: name, url: url}') }}"
-    # - name: Mostrar lista de Team
-    #   debug:
-    #     msg: "ID: {{ item.id }}, Nombre: {{ item.name }}"
-    #   loop: "{{ teams_list }}"
-
-    # - name: Extraer solo ID y nombre de los teams
-    #   set_fact:
-    #     teams_list: |
-    #       {% set teams = [] %}
-    #       {% for team in api_response.json.results %}
-    #       {% set _ = teams.append({
-    #         'id': team.id,
-    #         'name': team.name
-    #       }) %}
-    #       {% endfor %}
-    #       {{ teams }}
-
-    # - name: Mostrar teams (formato simple)
-    #   debug:
-    #     msg: |
-    #       {% for team in teams_list %}
-    #       ID: {{ team.id | trim }} - Nombre: {{ team.name | trim }}
-    #       {% endfor %}
+          {{ api_response.json.results | json_query("[?name != null && starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}
 
     - name: Crear reporte CSV
       set_fact:
         teams_csv: |
           ID,NAME,URL
           {% for team in teams_list %}
-          {{ team.id | trim }},{{ team.name | trim }}
+          {{ team.id | trim }},{{ team.name | trim }},{{ team.url | trim }} 
           {% endfor %}
 
     - name: Mostrar CSV
