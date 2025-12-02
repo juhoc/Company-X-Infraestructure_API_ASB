@@ -1,7 +1,6 @@
 ---
-- name: Tareas por bloques
-  block:
-    - name: Ejecutar plantilla Snapshot Windows
+- block:
+    - name: Ejecutar API ASB
       uri:
         url: "{{ tower_base_url }}/api/v2/teams/"
         method: GET
@@ -17,10 +16,11 @@
 
     - name: Extraer datos de los Teams
       set_fact:
-        # teams_list: "{{ api_response.json.results | json_query('[].{id: id, name: name, url: url}') }}"
         teams_list: >
-          {{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}
+          {{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name}") }}
 
+          # {{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}
+        # teams_list: "{{ api_response.json.results | json_query('[].{id: id, name: name, url: url}') }}"
     # - name: Mostrar lista de Team
     #   debug:
     #     msg: "ID: {{ item.id }}, Nombre: {{ item.name }}"
@@ -50,7 +50,7 @@
         teams_csv: |
           ID,NAME,URL
           {% for team in teams_list %}
-          {{ team.id | trim }},{{ team.name | trim }},{{ team.url | trim }}
+          {{ team.id | trim }},{{ team.name | trim }}
           {% endfor %}
 
     - name: Mostrar CSV
