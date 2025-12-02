@@ -42,3 +42,11 @@
           {% for team in teams_list %}
           ID: {{ team.id }} - Nombre: {{ team.name }}
           {% endfor %}
+
+    - name: Crear reporte CSV
+      set_fact:
+        teams_csv: |
+          ID,NAME
+          {% for team in teams_list %}
+          {{ team.id }},{{ team.name }}
+          {% endfor %}
