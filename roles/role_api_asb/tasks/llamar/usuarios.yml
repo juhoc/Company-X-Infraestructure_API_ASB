@@ -1,12 +1,9 @@
 ---
-- vars:
-    team_id: 1
-
 - name: Tareas por bloques
   block:
     - name: Ejecutar plantilla Snapshot Windows
       uri:
-        url: "{{ tower_base_url }}/api/v2/teams/{{ team_id }}/access_list/"
+        url: "{{ tower_base_url }}/api/v2/teams/1/access_list/"
         method: GET
         headers:
           Authorization: "Bearer {{ tower_token }}"
