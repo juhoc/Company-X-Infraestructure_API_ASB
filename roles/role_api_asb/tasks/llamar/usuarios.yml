@@ -13,13 +13,6 @@
         validate_certs: false
         force_basic_auth: true
         body_format: json
-        # body:
-        #   # inventory: "{{ accionjtp1.inventarioid }}"
-        #   credentials: "{{ accionjtp1.credemciales }}"
-        #   limit: "{{ ansible_limit }}"
-        #   extra_vars:
-        #     '{ "idcrqincreq": "{{ accionjtp1.idcrqincreq | trim }}",
-        #     "tarea": "{{ accionjtp1.tarea }}" }'
       register: lanzar_plantilla
   # delegate_to: localhost
   # run_once: true

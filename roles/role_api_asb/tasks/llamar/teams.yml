@@ -13,32 +13,13 @@
         validate_certs: false
         force_basic_auth: true
         body_format: json
-        # body:
-        #   # inventory: "{{ accionjtp1.inventarioid }}"
-        #   credentials: "{{ accionjtp1.credemciales }}"
-        #   limit: "{{ ansible_limit }}"
-        #   extra_vars:
-        #     '{ "idcrqincreq": "{{ accionjtp1.idcrqincreq | trim }}",
-        #     "tarea": "{{ accionjtp1.tarea }}" }'
-      register: lanzar_plantilla
-  # delegate_to: localhost
-  # run_once: true
+      register: api_response
 
-# - name: Tareas por bloques
-#   block:
-#     - name: Sensar plantilla Snapshot Windows
-#       uri:
-#         url: "{{ lanzar_plantilla.location }}"
-#         validate_certs: no
-#         force_basic_auth: true
-#         method: GET
-#         headers:
-#           Authorization: Bearer {{ tower_token }}
-#         status_code: 200, 201, 204
-#       register: trabajos
-#       until: trabajos.json.status == 'successful' or trabajos.json.status == 'failed' or trabajos.json.status == 'canceled' 
-#       failed_when: trabajos.json.status == 'failed' or trabajos.json.status == 'canceled'
-#       delay: "{{ accionjtp1.demora }}"
-#       retries: "{{ accionjtp1.reintentos }}"
-#   delegate_to: localhost
-#   run_once: true
+    - name: Extraer datos de los Teams
+      set_fact:
+        teams_list: "{{ api_response.json.results | json_query('[].{id: id, name: name}) }}"
+
+    - name: Mostrar lista de Team
+      debug:
+        msg: "ID: {{ item.id }}, Nombre: {{ item.name }}"
+      loop: "{{ team_list_details }}"
