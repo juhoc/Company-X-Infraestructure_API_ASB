@@ -1,4 +1,7 @@
 ---
+- vars:
+    team_id: 1
+
 - name: Tareas por bloques
   block:
     - name: Ejecutar plantilla Snapshot Windows
