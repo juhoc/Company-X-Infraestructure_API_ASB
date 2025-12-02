@@ -1,6 +1,6 @@
 ---
 - block:
-    - name: Ejecutar API ASB
+    - name: Ejecutar plantilla Snapshot Windows
       uri:
         url: "{{ tower_base_url }}/api/v2/teams/"
         method: GET
@@ -14,22 +14,25 @@
         body_format: json
       register: api_response
 
-    - name: Filtrar teams con selectattr
+    - name: Extraer datos de los Teams
       set_fact:
-        teams_list: "{{ api_response.json.results | selectattr('name', 'match', '^bvm_') | list }}"
-    
-    - name: Extraer solo id y name
+        teams_list: >
+          {{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}
+
+    - name: Crear reporte CSV
       set_fact:
-        teams_simple: |
+        teams_csv: |
           ID,NAME,URL
-          {% set teams = [] %}
           {% for team in teams_list %}
-          {% set _ = teams.append({'id': team.id, 'name': team.name, 'url': url}) %}
+          {{ team.id | trim }},{{ team.name | trim }},{{ team.url | trim }}
           {% endfor %}
-          {{ teams }}
+
+    - name: Mostrar CSV
+      debug:
+        msg: "{{ teams_csv | trim }}"
 
     - name: Enviar CSV a Artifacts
       set_stats:
         data:
-          artifact_api: "{{ teams_simple | trim }}"
+          artifact_api: "{{ teams_csv | trim }}"
         aggregate: false
