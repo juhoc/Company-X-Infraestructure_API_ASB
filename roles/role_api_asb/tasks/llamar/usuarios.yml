@@ -12,7 +12,7 @@
         return_content: true
         validate_certs: false
         force_basic_auth: true
-        # body_format: json
+        body_format: json
         # body:
         #   # inventory: "{{ accionjtp1.inventarioid }}"
         #   credentials: "{{ accionjtp1.credemciales }}"
