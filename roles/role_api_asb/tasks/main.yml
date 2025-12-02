@@ -18,11 +18,11 @@
 - set_fact:
     run_playbook: |
       {% if tarea == 'Obtener_lista_teams' %}
-      ['validar/teams']
+      ['llamar/teams']
       {% elif tarea == 'Obtener_lista_usuarios' %}
-      ['validar/usuarios']
+      ['llamar/usuarios']
       {% elif tarea == 'Obtener_lista_teams_usuarios' %}
-      ['validar/teams_usuarios']
+      ['llamar/teams_usuarios']
       {% else %}
       ['No_selecciono_ninguna_tarea']
       {% endif %}
