@@ -54,3 +54,9 @@
     - name: Mostrar CSV
       debug:
         msg: "{{ teams_csv | trim }}"
+
+    - name: Enviar CSV a Artifacts
+      set_stats:
+        data:
+          artifact_diminfo: "{{ teams_csv | trim }}"
+        aggregate: false
