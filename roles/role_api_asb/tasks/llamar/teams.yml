@@ -17,9 +17,9 @@
 
     - name: Extraer datos de los Teams
       set_fact:
-        teams_list: "{{ api_response.json.results | json_query('[].{id: id, name: name}) }}"
+        teams_list: "{{ api_response.json.results | json_query('[].{id: id, name: name}') }}"
 
     - name: Mostrar lista de Team
       debug:
         msg: "ID: {{ item.id }}, Nombre: {{ item.name }}"
-      loop: "{{ team_list_details }}"
+      loop: "{{ team_list }}"
