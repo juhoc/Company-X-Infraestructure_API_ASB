@@ -19,7 +19,7 @@
       set_fact:
         # teams_list: "{{ api_response.json.results | json_query('[].{id: id, name: name, url: url}') }}"
         teams_list: >
-          "{{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}"        
+          {{ api_response.json.results | json_query("[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}
 
     # - name: Mostrar lista de Team
     #   debug:
