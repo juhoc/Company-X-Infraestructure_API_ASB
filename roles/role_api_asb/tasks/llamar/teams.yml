@@ -22,4 +22,4 @@
     - name: Mostrar lista de Team
       debug:
         msg: "ID: {{ item.id }}, Nombre: {{ item.name }}"
-      loop: "{{ team_list }}"
+      loop: "{{ teams_list }}"
