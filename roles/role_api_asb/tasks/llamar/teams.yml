@@ -35,3 +35,10 @@
           }) %}
           {% endfor %}
           {{ teams }}
+
+    - name: Mostrar teams (formato simple)
+      debug:
+        msg: |
+          {% for team in teams_list %}
+          ID: {{ team.id }} - Nombre: {{ team.name }}
+          {% endfor %}
