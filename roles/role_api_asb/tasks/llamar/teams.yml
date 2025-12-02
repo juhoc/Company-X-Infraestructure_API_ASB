@@ -23,3 +23,15 @@
       debug:
         msg: "ID: {{ item.id }}, Nombre: {{ item.name }}"
       loop: "{{ teams_list }}"
+
+    - name: Extraer solo ID y nombre de los teams
+      set_fact:
+        teams_list: |
+          {% set teams = [] %}
+          {% for team in api_response.json.results %}
+          {% set _ = teams.append({
+            'id': team.id,
+            'name': team.name
+          }) %}
+          {% endfor %}
+          {{ teams }}
