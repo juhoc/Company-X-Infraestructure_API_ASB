@@ -40,7 +40,7 @@
       debug:
         msg: |
           {% for team in teams_list %}
-          ID: {{ team.id }} - Nombre: {{ team.name }}
+          ID: {{ team.id | trim }} - Nombre: {{ team.name | trim }}
           {% endfor %}
 
     - name: Crear reporte CSV
@@ -48,9 +48,9 @@
         teams_csv: |
           ID,NAME
           {% for team in teams_list %}
-          {{ team.id }},{{ team.name }}
+          {{ team.id | trim }},{{ team.name | trim }}
           {% endfor %}
 
     - name: Mostrar CSV
       debug:
-        msg: "{{ teams_csv }}"
+        msg: "{{ teams_csv | trim }}"
