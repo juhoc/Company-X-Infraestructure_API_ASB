@@ -14,25 +14,22 @@
         body_format: json
       register: api_response
 
-    - name: Extraer datos de los Teams
+    - name: Filtrar teams con selectattr
       set_fact:
-        teams_list: >
-          {{ api_response.json.results | json_query("[?name != null && starts_with(name, 'bvm_')].{id: id, name: name, url: url}") }}
-
-    - name: Crear reporte CSV
+        teams_list: "{{ api_response.json.results | selectattr('name', 'match', '^bvm_') | list }}"
+    
+    - name: Extraer solo id y name
       set_fact:
-        teams_csv: |
+        teams_simple: |
           ID,NAME,URL
+          {% set teams = [] %}
           {% for team in teams_list %}
-          {{ team.id | trim }},{{ team.name | trim }},{{ team.url | trim }} 
+          {% set _ = teams.append({'id': team.id, 'name': team.name, 'url': url}) %}
           {% endfor %}
-
-    - name: Mostrar CSV
-      debug:
-        msg: "{{ teams_csv | trim }}"
+          {{ teams }}
 
     - name: Enviar CSV a Artifacts
       set_stats:
         data:
-          artifact_api: "{{ teams_csv | trim }}"
+          artifact_api: "{{ teams_simple | trim }}"
         aggregate: false
