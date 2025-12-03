@@ -16,7 +16,7 @@
 
     - name: Extraer datos de los Teams
       set_fact:
-        teams_list: "{{ api_response.json.results | json_query('[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}') }}"
+        teams_list: "{{ api_response.json.results | json_query(\"[?starts_with(name, 'bvm_')].{id: id, name: name, url: url}\") }}"
 
     - name: Crear reporte CSV
       set_fact:
